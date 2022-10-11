@@ -1,11 +1,12 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:puzzle_15/models/game.dart';
 
 class GameController extends ChangeNotifier {
-  var game = Game();
+  final game = Game();
   var jogadas = 0;
   var gameStart = false;
   Timer? timer;

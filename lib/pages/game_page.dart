@@ -14,11 +14,15 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
-    var game = context.watch<GameController>();
+    final game = context.watch<GameController>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: Text(
+          '15 Puzzle',
+          style: GoogleFonts.pressStart2p(
+              fontSize: 18, color: const Color(0xffffe73c)),
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(

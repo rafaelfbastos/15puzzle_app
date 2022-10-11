@@ -25,9 +25,10 @@ class MyApp extends StatelessWidget {
           "/fim": (context) => const Fim()
         },
         theme: ThemeData(
-          scaffoldBackgroundColor: Colors.grey[800],
+          scaffoldBackgroundColor: Colors.grey[900],
           primarySwatch: Colors.grey,
         ),
+        initialRoute: "/fim",
       ),
     );
   }

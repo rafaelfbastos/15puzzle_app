@@ -17,22 +17,47 @@ class _HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            '15Puzzle',
-            style:
-                GoogleFonts.acme(fontSize: 25, color: const Color(0xffffe73c)),
+            '15 Puzzle',
+            style: GoogleFonts.pressStart2p(
+                fontSize: 18, color: const Color(0xffffe73c)),
           ),
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
+          child: Container(
+            width: double.infinity,
+            height: double.infinity,
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage("assets/backgroud.png"),
+              fit: BoxFit.fill,
+            )),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ButtonStyle(
+                      padding:
+                          MaterialStateProperty.all(const EdgeInsets.all(20))),
                   onPressed: () {
                     Navigator.of(context).pushNamed("/game");
                     game.reinicarJogo();
                   },
-                  child: Text("Começar"))
-            ],
+                  child: Text(
+                    "Começar",
+                    style: GoogleFonts.pressStart2p(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: const Color(0xffffe73c),
+                        shadows: <Shadow>[
+                          const Shadow(
+                              color: Color(0xfff6a5c00),
+                              blurRadius: 15,
+                              offset: Offset(0, 3))
+                        ]),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }

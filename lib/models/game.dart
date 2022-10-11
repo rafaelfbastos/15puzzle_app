@@ -9,7 +9,7 @@ class Game {
 
   Game() {
     tabuleiro = [...pecas];
-    tabuleiro.shuffle();
+    //tabuleiro.shuffle();
   }
   void swapItens(int pos1, int pos2) {
     int temp = tabuleiro[pos1];
