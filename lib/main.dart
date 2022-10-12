@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzle_15/Controller/game_controller.dart';
+import 'package:puzzle_15/database/rank_DAO.dart';
 import 'package:puzzle_15/pages/fim_page.dart';
 import 'package:puzzle_15/pages/game_page.dart';
 import 'package:puzzle_15/pages/home_page.dart';
@@ -18,6 +19,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (__) => GameController()),
+        Provider(create: (__) {
+          var rank = RankDAO();
+          rank.findAll();
+          return rank;
+        })
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
