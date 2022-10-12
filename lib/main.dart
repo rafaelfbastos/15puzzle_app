@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (__) => GameController()),
-        Provider(create: (__) {
+        ChangeNotifierProvider(create: (__) {
           var rank = RankDAO();
           rank.findAll();
           return rank;

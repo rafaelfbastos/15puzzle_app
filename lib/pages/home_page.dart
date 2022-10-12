@@ -20,7 +20,7 @@ class _HomeState extends State<Home> {
         decoration: const BoxDecoration(
             image: DecorationImage(
           image: AssetImage("assets/background.png"),
-          fit: BoxFit.fill,
+          fit: BoxFit.cover,
         )),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

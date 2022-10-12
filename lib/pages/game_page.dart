@@ -5,6 +5,7 @@ import 'package:puzzle_15/Controller/game_controller.dart';
 import 'package:puzzle_15/custom_widgets/pecas.dart';
 import 'package:puzzle_15/custom_widgets/rank_dialog.dart';
 import 'package:puzzle_15/database/rank_DAO.dart';
+import 'package:puzzle_15/models/rank_model.dart';
 
 class Game extends StatefulWidget {
   const Game({Key? key}) : super(key: key);
@@ -17,7 +18,14 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     final game = context.watch<GameController>();
-    var rankList = context.read<RankDAO>();
+    var rank = context.read<RankDAO>();
+    var rankList = <RankModel>[];
+
+    Future<void> _atualizar() async {
+      rankList = await rank.getList();
+    }
+
+    _atualizar();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +36,8 @@ class _GameState extends State<Game> {
               showDialog(
                   context: context,
                   builder: ((context) {
-                    return RankDialog(rankList: rankList.rankList);
+                    _atualizar();
+                    return RankDialog(rankList: rankList);
                   }));
             },
             icon: const Icon(Icons.analytics_outlined),
