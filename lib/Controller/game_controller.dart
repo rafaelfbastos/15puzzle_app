@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:puzzle_15/models/game.dart';
@@ -12,6 +10,7 @@ class GameController extends ChangeNotifier {
   Timer? timer;
   var segundos = 0;
   var fim = false;
+  var nome = "";
 
   void movePecas(int pos, context) {
     if (game.movePecas(pos) && !fim) {
@@ -54,5 +53,10 @@ class GameController extends ChangeNotifier {
     fim = false;
     timer?.cancel();
     game.shuffleTabuleiro();
+  }
+
+  void setNome(nome) {
+    this.nome = nome;
+    notifyListeners();
   }
 }

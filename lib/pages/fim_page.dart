@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:puzzle_15/Controller/game_controller.dart';
+import 'package:puzzle_15/database/data_base_connection.dart';
 
 class Fim extends StatefulWidget {
   const Fim({Key? key}) : super(key: key);
@@ -11,9 +13,70 @@ class Fim extends StatefulWidget {
 }
 
 class _FimState extends State<Fim> {
+  var nomeEC = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      showDialog(
+          context: context,
+          builder: ((context) {
+            return AlertDialog(
+              title: const Text("Digite seu nome"),
+              content: Form(
+                key: formKey,
+                child: TextFormField(
+                  validator: (String? nome) {
+                    if (nome == null || nome.isEmpty) {
+                      return "Digite um nome";
+                    }
+                  },
+                  controller: nomeEC,
+                  decoration:
+                      const InputDecoration(hintText: "Digite seu nome"),
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                    onPressed: () async {
+                      var formValidator =
+                          formKey.currentState?.validate() ?? false;
+                      if (formValidator) {
+                        await _gravarBanco(nomeEC.text);
+                        Navigator.of(context).pop();
+                      }
+                    },
+                    child: Text("Ok"))
+              ],
+            );
+          }));
+    });
+  }
+
+  @override
+  void dispose() {
+    nomeEC.dispose();
+    super.dispose();
+  }
+
+  Future<void> _gravarBanco(nome) async {
+    var data = DateFormat("dd-MM-yy").format(DateTime.now());
+    var tempo = context.read<GameController>().segundos;
+    var jogadas = context.read<GameController>().jogadas;
+    var database = await DataBaseConnection().openConnection();
+    context.read<GameController>().setNome(nome);
+
+    database.insert("rank",
+        {"nome": nome, "data": data, "jogadas": jogadas, "tempo": tempo});
+  }
+
   @override
   Widget build(BuildContext context) {
     var game = context.watch<GameController>();
+
     return Scaffold(
       backgroundColor: Colors.grey[900],
       appBar: AppBar(
@@ -23,42 +86,47 @@ class _FimState extends State<Fim> {
               fontSize: 18, color: const Color(0xffffe73c)),
         ),
       ),
-      body: Center(
-        child: Column(
-          children: [
-            Image.asset("assets/parabens.png"),
-            const SizedBox(
-              height: 20,
-            ),
-            RichText(
-              text: TextSpan(
-                  text: "Jogadas: ",
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            children: [
+              Image.asset("assets/parabens.png"),
+              Text(game.nome,
+                  style: GoogleFonts.pressStart2p(
+                      fontSize: 20, color: Colors.red)),
+              const SizedBox(
+                height: 30,
+              ),
+              RichText(
+                text: TextSpan(
+                    text: "Jogadas: ",
+                    style: GoogleFonts.pressStart2p(
+                        fontSize: 18, color: const Color(0xffffe73c)),
+                    children: [
+                      TextSpan(
+                        text: "${game.jogadas}",
+                        style: const TextStyle(color: Colors.red),
+                      )
+                    ]),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: "Tempo: ",
                   style: GoogleFonts.pressStart2p(
                       fontSize: 18, color: const Color(0xffffe73c)),
                   children: [
                     TextSpan(
-                      text: "${game.jogadas}",
+                      text: game.tempoDeJogo(),
                       style: const TextStyle(color: Colors.red),
                     )
-                  ]),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            RichText(
-              text: TextSpan(
-                text: "Tempo: ",
-                style: GoogleFonts.pressStart2p(
-                    fontSize: 18, color: const Color(0xffffe73c)),
-                children: [
-                  TextSpan(
-                    text: game.tempoDeJogo(),
-                    style: const TextStyle(color: Colors.red),
-                  )
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

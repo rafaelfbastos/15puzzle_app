@@ -15,8 +15,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (__) => GameController(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (__) => GameController()),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         routes: {
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.grey[900],
           primarySwatch: Colors.grey,
         ),
-        initialRoute: "/fim",
+        initialRoute: "/",
       ),
     );
   }
