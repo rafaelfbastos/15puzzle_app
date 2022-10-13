@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:puzzle_15/models/game.dart';
@@ -11,10 +12,13 @@ class GameController extends ChangeNotifier {
   var segundos = 0;
   var fim = false;
   var nome = "";
+  var song = true;
+  final player = AudioPlayer();
 
   void movePecas(int pos, context) {
     if (game.movePecas(pos) && !fim) {
       jogadas++;
+      if (song) tocarSom();
 
       if (!gameStart) {
         startTime();
@@ -46,17 +50,37 @@ class GameController extends ChangeNotifier {
     return "$min : $seg";
   }
 
-  void reinicarJogo() {
+  Future<void> reinicarJogo() async {
     jogadas = 0;
     segundos = 0;
     gameStart = false;
     fim = false;
     timer?.cancel();
     game.shuffleTabuleiro();
+    await player.setSource(AssetSource('transition.wav'));
   }
 
   void setNome(nome) {
     this.nome = nome;
+    notifyListeners();
+  }
+
+  Future<void> tocarSom() async {
+    await player.setSource(AssetSource('transition.wav'));
+    await player.resume();
+  }
+
+  Future<void> tocarSomWin() async {
+    await player.setSource(AssetSource('win.wav'));
+    await player.resume();
+  }
+
+  void mutar() {
+    if (song == true) {
+      song = false;
+    } else {
+      song = true;
+    }
     notifyListeners();
   }
 }

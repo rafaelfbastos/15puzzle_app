@@ -30,6 +30,22 @@ class _GameState extends State<Game> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          Visibility(
+              visible: !game.song,
+              child: IconButton(
+                icon: Icon(Icons.volume_off),
+                onPressed: (() {
+                  game.mutar();
+                }),
+              )),
+          Visibility(
+              visible: game.song,
+              child: IconButton(
+                icon: Icon(Icons.volume_up),
+                onPressed: (() {
+                  game.mutar();
+                }),
+              )),
           IconButton(
             tooltip: "Rank",
             onPressed: () {

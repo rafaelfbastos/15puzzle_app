@@ -25,6 +25,8 @@ class _FimState extends State<Fim> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<GameController>().tocarSomWin();
+
       showDialog(
           context: context,
           builder: ((context) {
